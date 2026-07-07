@@ -1,87 +1,52 @@
-# Aplicação web (GitHub Pages)
+# Choque do petróleo de 2026 e a intervenção nos combustíveis
 
-Página **estática** que carrega resultados **pré-computados** (JSON) e os renderiza com
-Plotly. Nenhum cálculo econométrico roda no navegador — o notebook/pipeline exporta os
-JSON para [`data/`](data/) e a página apenas os desenha.
+Site interativo com os resultados de um trabalho de **econometria de séries temporais**:
+o *contrafactual* do preço na bomba (gasolina e diesel) **caso o governo não tivesse
+intervindo** no choque de petróleo de fevereiro/2026.
 
-## Estrutura
-
-```
-04_web/
-  index.html          página única com 3 abas
-  .nojekyll           impede o Jekyll de processar o site
-  assets/
-    css/style.css
-    js/app.js         carrega os JSON de data/ e monta os gráficos
-    vendor/           (opcional) plotly.min.js para uso offline
-  data/
-    manifest.json     lista de artefatos + metadados
-    forecast_compare.json   Aba 1 — VAR vs XGBoost vs LSTM
-    counterfactual.json     Aba 2 — observado vs "sem intervenção"
-    regional.json           Aba 3 — heterogeneidade regional (posto a posto)
-```
+🔗 **https://andrefbrandao21.github.io/choque-petroleo-2026/**
 
 ## Abas
 
-1. **Comparação de modelos** — usuário escolhe VAR/XGBoost/LSTM; RMSE/MAE por horizonte.
-2. **Contrafactual** — observado vs "sem intervenção", com área sombreada do efeito.
-3. **Heterogeneidade regional** — preço posto a posto por macro-região e UF
-   (dispersão que a média nacional esconde).
+1. **Introdução** — o choque, a resposta do governo e a linha do tempo da política de preços
+   da Petrobras (por que o repasse é medido em 2021–22).
+2. **Comparação de modelos** — erro preditivo fora da amostra (RMSE/MAE por horizonte) de
+   cinco métodos: VAR, VECM, Projeções Locais, XGBoost e LSTM.
+3. **Contrafactual** — preço observado vs. "sem intervenção" estimado pelos cinco métodos,
+   com a banda de incerteza entre eles e o benchmark mecânico (subvenção).
+4. **Heterogeneidade regional** — preço por estado (UF) e macrorregião, em mapa.
+5. **Conclusão & debate** — síntese dos achados e comentários públicos ([giscus](https://giscus.app)).
 
-## Fluxo de dados
+## Como funciona
 
-O pipeline (`02_modelagem/scripts/export_web/`) grava os JSON aqui em `data/`. O
-**esquema** de cada arquivo está documentado em [`data/SCHEMA.md`](data/SCHEMA.md). Os
-JSON são **versionados** (a página depende deles) — ver `.gitignore` na raiz.
+Site **100% estático** (HTML + [Plotly](https://plotly.com/javascript/) via CDN). Não há
+servidor nem cálculo no navegador: todos os resultados são **pré-computados** e salvos como
+JSON/GeoJSON em [`data/`](data/); a página apenas os desenha.
+
+## Sobre os dados em `data/`
+
+São **resultados agregados** já processados — estimativas do contrafactual, erros de
+previsão e preços médios por região/UF. **Não há microdados brutos nem informação sensível.**
+Num site estático esses arquivos *são* a matéria-prima dos gráficos (o navegador os baixa
+para renderizar), então precisam ser públicos. O código de pesquisa que os gera (ETL e
+modelos) é mantido separado deste repositório. Esquema de cada arquivo em
+[`data/SCHEMA.md`](data/SCHEMA.md).
 
 ## Rodar localmente
 
-Como há `fetch()` de arquivos locais, sirva por HTTP (abrir via `file://` é bloqueado):
+Sirva por HTTP (o `fetch()` de arquivos locais não funciona via `file://`):
 
 ```bash
-cd 04_web
 python -m http.server 8000
 # abrir http://localhost:8000
 ```
 
-## Publicar no GitHub Pages — **só o site** (recomendado)
+## Publicação
 
-O objetivo é subir **apenas esta pasta** (`04_web/`) para um repositório **público**,
-mantendo a pesquisa (dados, código, drafts) fora do GitHub. Como o giscus (comentários)
-também exige repositório público, esse mesmo repo do site serve as duas coisas.
+Repositório público servido pelo **GitHub Pages** (branch `main`, raiz). Ao atualizar a
+análise, regenere os arquivos de `data/` e faça commit — a página reflete os novos resultados
+no próximo deploy.
 
-**Dois repositórios:**
-- **Repo público do site** = o conteúdo de `04_web/` na raiz (index.html, assets/, data/,
-  *.geojson, .nojekyll, README). O Pages serve a raiz.
-- **Pesquisa** = repositório privado (ou só local); nunca vai ao ar.
+---
 
-Passo a passo:
-```bash
-cd 04_web
-git init && git add . && git commit -m "site do oil_shock"
-git branch -M main
-git remote add origin https://github.com/SEU-USUARIO/SEU-REPO.git
-git push -u origin main
-```
-Depois: **Settings ▸ Pages ▸ Deploy from a branch ▸ main / (root)**. Como o site está na
-raiz do repo, não precisa de Actions nem de pasta `/docs`.
-
-> Os JSON/GeoJSON em `data/` são **gerados pela pesquisa** (`02_modelagem/scripts/export_web`,
-> `counterfactual.py`, `forecast_eval.py`) e copiados para cá. Ao reprocessar, regenere e
-> faça commit dos novos `data/*`.
-
-## Comentários (giscus)
-
-A aba **Conclusão & debate** embute o [giscus](https://giscus.app) — comentários públicos
-guardados nas **GitHub Discussions do repo do site**. Ativação (~2 min):
-1. Repo do site **público** com **Discussions** habilitado (Settings ▸ General ▸ Features).
-2. Instale o app do giscus no repo: https://github.com/apps/giscus
-3. Em https://giscus.app, informe `SEU-USUARIO/SEU-REPO`, escolha *mapping = pathname* e uma
-   categoria (ex.: crie "Comentários" nas Discussions). O site gera os IDs.
-4. Cole `data-repo`, `data-repo-id`, `data-category` e `data-category-id` no bloco `giscus`
-   do `index.html` (substituindo os `PLACEHOLDER_*`). Remova a nota `#giscus-note` se quiser.
-
-## Plotly
-
-Por padrão `index.html` carrega Plotly via CDN. Para uso **offline/self-contained**,
-baixar `plotly.min.js` para `assets/vendor/` e trocar o `<script src>` no `index.html`.
+Autor: **André Filipe Brandão** — PPGE/UFPB.

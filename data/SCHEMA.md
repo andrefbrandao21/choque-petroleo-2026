@@ -1,15 +1,7 @@
 # Esquema dos JSON (`data/`)
 
-O pipeline (`02_modelagem/scripts/export_web/`) grava estes arquivos. A página os
-consome sem transformação. Os arquivos abaixo já existem com **dados de exemplo**
-(sufixo conceitual "placeholder") só para a página renderizar; o pipeline os
-sobrescreve com os resultados reais.
-
-## `manifest.json`
-Metadados de build (para exibir data/commit na página, se desejado).
-```json
-{ "generated_at": "ISO-8601", "sample": true, "notes": "string" }
-```
+Formato dos resultados agregados que a página consome (sem transformação no navegador).
+Gerados pelo código de pesquisa, mantido em separado deste repositório.
 
 ## `forecast_compare.json` — Aba 1 (comparação preditiva OOS)
 ```json
@@ -29,7 +21,7 @@ Metadados de build (para exibir data/commit na página, se desejado).
 Erro de previsão fora da amostra (janela expansível, condicional ao Brent/câmbio
 verdadeiro), por horizonte, combustível e métrica. Cada vetor tem o comprimento de
 `horizons`. A página tem seletor de combustível, de métrica (RMSE/MAE) e toggles por
-método. Gerado por `forecast_eval.py`.
+método. Gerado pelo código de pesquisa (mantido em separado).
 
 ## `counterfactual.json` — Aba 2 (um contrafactual por método)
 ```json
@@ -66,7 +58,7 @@ as séries têm a dimensão de `dates`.
 Preço posto a posto (ANP surveia ~473 municípios, 8,5% do total) agregado por macro-região
 (semanal + média no choque) e por UF (média no choque), ponderado pelo nº de postos.
 Município/mesorregião foram descartados (cobertura amostral esparsa demais). Descritivo.
-Gerado por `02_modelagem/scripts/export_web/regional.py`.
+Gerado pelo código de pesquisa (mantido em separado).
 
 ## `br_uf.geojson` / `br_region.geojson` — geometrias (mapa da Aba 3)
 - `br_uf.geojson`: 27 UFs, `properties.sigla` (~170 KB). Fonte: codeforgermany/click_that_hood.
