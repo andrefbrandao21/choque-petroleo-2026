@@ -1,4 +1,4 @@
-/* Página estática — carrega JSON pré-computados de data/ e desenha com Plotly.
+/* Página estática: carrega JSON pré-computados de data/ e desenha com Plotly.
    Nenhum cálculo econométrico aqui: só renderização e interações leves. */
 
 const PLOT_LAYOUT = {
@@ -199,7 +199,7 @@ async function initRegional() {
 
 function placeholder(elId, msg) {
   document.getElementById(elId).innerHTML =
-    `<div style="padding:24px;color:#9aa0a6">Sem dados ainda — rode o pipeline para gerar
+    `<div style="padding:24px;color:#9aa0a6">Sem dados ainda. Rode o pipeline para gerar
      <code>data/</code>.<br><small>${msg}</small></div>`;
 }
 

@@ -8,14 +8,14 @@ intervindo** no choque de petróleo de fevereiro/2026.
 
 ## Abas
 
-1. **Introdução** — o choque, a resposta do governo e a linha do tempo da política de preços
+1. **Introdução**: o choque, a resposta do governo e a linha do tempo da política de preços
    da Petrobras (por que o repasse é medido em 2021–22).
-2. **Comparação de modelos** — erro preditivo fora da amostra (RMSE/MAE por horizonte) de
+2. **Comparação de modelos**: erro preditivo fora da amostra (RMSE/MAE por horizonte) de
    cinco métodos: VAR, VECM, Projeções Locais, XGBoost e LSTM.
-3. **Contrafactual** — preço observado vs. "sem intervenção" estimado pelos cinco métodos,
+3. **Contrafactual**: preço observado vs. "sem intervenção" estimado pelos cinco métodos,
    com a banda de incerteza entre eles e o benchmark mecânico (subvenção).
-4. **Heterogeneidade regional** — preço por estado (UF) e macrorregião, em mapa.
-5. **Conclusão & debate** — síntese dos achados e comentários públicos ([giscus](https://giscus.app)).
+4. **Heterogeneidade regional**: preço por estado (UF) e macrorregião, em mapa.
+5. **Conclusão & debate**: síntese dos achados e comentários públicos ([giscus](https://giscus.app)).
 
 ## Como funciona
 
@@ -25,7 +25,7 @@ JSON/GeoJSON em [`data/`](data/); a página apenas os desenha.
 
 ## Sobre os dados em `data/`
 
-São **resultados agregados** já processados — estimativas do contrafactual, erros de
+São **resultados agregados** já processados: estimativas do contrafactual, erros de
 previsão e preços médios por região/UF. **Não há microdados brutos nem informação sensível.**
 Num site estático esses arquivos *são* a matéria-prima dos gráficos (o navegador os baixa
 para renderizar), então precisam ser públicos. O código de pesquisa que os gera (ETL e
@@ -44,9 +44,9 @@ python -m http.server 8000
 ## Publicação
 
 Repositório público servido pelo **GitHub Pages** (branch `main`, raiz). Ao atualizar a
-análise, regenere os arquivos de `data/` e faça commit — a página reflete os novos resultados
+análise, regenere os arquivos de `data/` e faça commit, e a página reflete os novos resultados
 no próximo deploy.
 
 ---
 
-Autor: **André Filipe Brandão** — PPGE/UFPB.
+Autor: **André Filipe Brandão**, PPGE/UFPB.

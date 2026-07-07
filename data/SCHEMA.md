@@ -3,7 +3,7 @@
 Formato dos resultados agregados que a página consome (sem transformação no navegador).
 Gerados pelo código de pesquisa, mantido em separado deste repositório.
 
-## `forecast_compare.json` — Aba 1 (comparação preditiva OOS)
+## `forecast_compare.json`: Aba 1 (comparação preditiva OOS)
 ```json
 {
   "horizons": [1, 2, ..., 12],
@@ -23,7 +23,7 @@ verdadeiro), por horizonte, combustível e métrica. Cada vetor tem o compriment
 `horizons`. A página tem seletor de combustível, de métrica (RMSE/MAE) e toggles por
 método. Gerado pelo código de pesquisa (mantido em separado).
 
-## `counterfactual.json` — Aba 2 (um contrafactual por método)
+## `counterfactual.json`: Aba 2 (um contrafactual por método)
 ```json
 {
   "gasolina": {
@@ -41,7 +41,7 @@ por método (todos ancorados em fev/2026, treino no regime livre 2021–22). `ba
 mín/máx entre métodos (incerteza). `mechanical` = observado + subvenção (benchmark). Todas
 as séries têm a dimensão de `dates`.
 
-## `regional.json` — Aba 3 (heterogeneidade regional)
+## `regional.json`: Aba 3 (heterogeneidade regional)
 ```json
 {
   "regions": ["N","NE","CO","SE","S"],
@@ -60,7 +60,7 @@ Preço posto a posto (ANP surveia ~473 municípios, 8,5% do total) agregado por 
 Município/mesorregião foram descartados (cobertura amostral esparsa demais). Descritivo.
 Gerado pelo código de pesquisa (mantido em separado).
 
-## `br_uf.geojson` / `br_region.geojson` — geometrias (mapa da Aba 3)
+## `br_uf.geojson` / `br_region.geojson`: geometrias (mapa da Aba 3)
 - `br_uf.geojson`: 27 UFs, `properties.sigla` (~170 KB). Fonte: codeforgermany/click_that_hood.
 - `br_region.geojson`: 5 macro-regiões, `properties.code` (~115 KB), dissolvidas das UFs.
 Ambos simplificados com shapely (tol. 0,02°). O choropleth casa `featureidkey` com
