@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Choque do petróleo 2026 — intervenção nos combustíveis</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Plotly via CDN. Para offline: baixar plotly.min.js em assets/vendor/ e trocar o src. -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+</head>
+<body>
+  <header>
+    <h1>Choque do petróleo de 2026 e a intervenção nos combustíveis</h1>
+    <p class="sub">
+      Contrafactual do preço na bomba — resultados pré-computados por cinco métodos
+      (VAR/VECM, Projeções Locais e ML). Trabalho de econometria de séries temporais.
+    </p>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="intro" role="tab">Introdução</button>
+    <button class="tab" data-tab="compare" role="tab">Comparação de modelos</button>
+    <button class="tab" data-tab="counterfactual" role="tab">Contrafactual</button>
+    <button class="tab" data-tab="regional" role="tab">Heterogeneidade regional</button>
+    <button class="tab" data-tab="conclusao" role="tab">Conclusão &amp; debate</button>
+  </nav>
+
+  <main>
+    <!-- Aba 0: introdução acessível -->
+    <section id="intro" class="panel active prose" role="tabpanel">
+      <h2>Em poucas palavras</h2>
+      <p class="lead">
+        No fim de fevereiro de 2026, uma guerra no Oriente Médio fechou uma das principais
+        rotas do petróleo no mundo. O preço do barril (Brent) <strong>quase dobrou em menos
+        de três semanas</strong>, saltando de cerca de US$ 60 para US$ 120. Normalmente,
+        um choque desses chega rápido à bomba de combustível — e daí à inflação.
+      </p>
+      <p>
+        O governo brasileiro reagiu com um <strong>pacote de medidas</strong> para segurar
+        os preços: subsídio por litro ao diesel e à gasolina, redução de impostos federais,
+        taxas sobre a exportação de petróleo e diesel, e a Petrobras evitando repassar o
+        aumento. A pergunta deste trabalho é simples de enunciar:
+      </p>
+      <p class="question">
+        Quanto custaria a gasolina e o diesel — e quanto teria subido a inflação — se o
+        governo <em>não</em> tivesse feito nada disso?
+      </p>
+
+      <h3>Como o preço da bomba é definido no Brasil</h3>
+      <p>
+        Por lei, os preços dos combustíveis são <strong>livres</strong> — o governo não fixa
+        o valor na bomba. Na prática, quem dá o tom é a <strong>Petrobras</strong>, dona da
+        maior parte do refino. E a regra que ela segue mudou ao longo do tempo — o que é
+        decisivo para entender este trabalho:
+      </p>
+      <ol class="timeline">
+        <li><span class="tl-when">2016</span>
+          <span class="tl-what"><strong>Paridade de importação (PPI).</strong> A Petrobras
+          passa a repassar à bomba as variações do petróleo internacional e do dólar, quase
+          na hora.</span></li>
+        <li><span class="tl-when">2021–22</span>
+          <span class="tl-what"><strong>Auge do PPI.</strong> Os preços seguem o mercado de
+          perto. É este período que usamos como <em>régua</em> do repasse "normal".</span></li>
+        <li><span class="tl-when">mai/2023</span>
+          <span class="tl-what"><strong>Fim do PPI.</strong> A Petrobras passa a suavizar e
+          segurar reajustes ("abrasileirar" os preços). Daí em diante a bomba reage pouco ao
+          petróleo.</span></li>
+        <li><span class="tl-when">fev/2026</span>
+          <span class="tl-what"><strong>O choque.</strong> Com os preços já represados, o
+          governo reforça a intervenção: subvenção, desoneração e taxa de exportação.</span></li>
+      </ol>
+      <p>
+        Não é a primeira vez: em 2022, diante de outro choque de petróleo, o governo já
+        cortara tributos e decretara estado de emergência (LC 192/194, EC 123/2022).
+      </p>
+
+      <h3>Como respondemos</h3>
+      <p>
+        Não dá para observar os dois mundos ao mesmo tempo. Então construímos um
+        <strong>"contrafactual"</strong>: no período em que os preços eram livres
+        (<strong>2021–2022</strong>, auge do PPI), ensinamos um modelo a prever a bomba a
+        partir do petróleo e do dólar. Depois alimentamos esse modelo com o que
+        <em>de fato</em> aconteceu com o petróleo e o câmbio durante o choque, e perguntamos:
+        <em>"que preço a bomba teria, se ainda reagisse como no tempo dos preços livres?"</em>
+        Medir o repasse no período já administrado (2023–25) distorceria a conta — chega a
+        inverter o sinal.
+      </p>
+      <p>
+        Essa linha projetada é o cenário "sem intervenção". A distância entre ela e o preço
+        que realmente vimos na bomba é o <strong>efeito do pacote do governo</strong>.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <h4>Comparação de modelos</h4>
+          <p>Antes de confiar na previsão, testamos vários métodos (estatísticos e de
+             aprendizado de máquina) e vemos qual erra menos fora da amostra.</p>
+        </div>
+        <div class="card">
+          <h4>Contrafactual</h4>
+          <p>O gráfico central: o observado vs. o cenário "sem intervenção" estimado por
+             cinco métodos (VAR, VECM, LP, XGBoost, LSTM). A banda entre eles mostra a
+             incerteza honesta do quanto o pacote segurou no seu bolso.</p>
+        </div>
+        <div class="card">
+          <h4>Heterogeneidade regional</h4>
+          <p>A média nacional esconde muita coisa: entre estados, o preço na bomba varia
+             mais de R$ 1,30/litro. Aqui você vê o mapa dessa desigualdade, região a região.</p>
+        </div>
+      </div>
+
+      <h3>O que ter em mente</h3>
+      <ul>
+        <li>O número que estimamos é o efeito do <strong>pacote inteiro</strong> junto —
+            não dá para separar quanto veio do subsídio, quanto do imposto ou da Petrobras.</li>
+        <li>O choque é muito recente: só ~18 semanas de dados depois dele, então os
+            resultados são um retrato inicial, não a palavra final.</li>
+        <li>Cinco métodos diferentes discordam sobre <em>quão rápido</em> o repasse teria
+            ocorrido nessas semanas. Por isso mostramos uma <strong>banda</strong> entre eles,
+            não um número único — é a medida honesta da incerteza.</li>
+      </ul>
+      <p class="cta">Comece pela aba <strong>Contrafactual</strong> para ver o resultado principal.</p>
+    </section>
+
+    <!-- Aba 1 -->
+    <section id="compare" class="panel" role="tabpanel">
+      <h2>Comparação preditiva fora da amostra</h2>
+      <p class="hint">
+        Quão bem cada método prevê a bomba <em>fora da amostra</em>, no período de preços
+        livres (janela expansível, divisão temporal). Dado o caminho verdadeiro de
+        Brent/câmbio, cada método projeta a bomba h passos à frente; o erro é medido contra o
+        observado. Isto diz em quais métodos confiar dentro da banda do contrafactual.
+      </p>
+      <div class="controls">
+        <label>Combustível:
+          <select id="cmp-fuel">
+            <option value="gasolina">Gasolina</option>
+            <option value="diesel">Diesel</option>
+          </select>
+        </label>
+        <label>Métrica:
+          <select id="cmp-metric">
+            <option value="RMSE">RMSE</option>
+            <option value="MAE">MAE</option>
+          </select>
+        </label>
+        <span id="compare-controls" class="toggles"></span>
+      </div>
+      <div id="compare-plot" class="plot"></div>
+      <p class="hint" id="cmp-note"></p>
+    </section>
+
+    <!-- Aba 2 -->
+    <section id="counterfactual" class="panel" role="tabpanel">
+      <h2>Observado vs. "sem intervenção" — um contrafactual por método</h2>
+      <p class="hint">
+        Cada método projeta a bomba sem intervenção a partir do caminho observado de
+        Brent/câmbio (treino no regime de preços livres 2021–22, ancorado em fev/2026). A
+        <strong>banda cinza</strong> entre os métodos é a medida honesta da incerteza; a
+        linha pontilhada é o benchmark mecânico (observado + subvenção).
+      </p>
+      <div class="controls">
+        <label>Combustível:
+          <select id="cf-fuel">
+            <option value="gasolina">Gasolina</option>
+            <option value="diesel">Diesel</option>
+          </select>
+        </label>
+        <span id="cf-methods" class="toggles"></span>
+      </div>
+      <div id="cf-plot" class="plot"></div>
+      <p class="hint" id="cf-note"></p>
+    </section>
+
+    <!-- Aba 3 -->
+    <section id="regional" class="panel" role="tabpanel">
+      <h2>Heterogeneidade regional — o que a média nacional esconde</h2>
+      <p class="hint">
+        O preço "nacional" é uma média. Na prática, o que você paga depende de <em>onde
+        está</em>: logística, tributação estadual e concorrência criam diferenças de mais de
+        R$ 1,30/litro entre estados. Dados posto a posto (473 municípios), agregados por
+        macro-região e UF com ponderação pelo nº de postos.
+      </p>
+      <div class="controls">
+        <label>Combustível:
+          <select id="rg-fuel">
+            <option value="gasolina">Gasolina</option>
+            <option value="diesel">Diesel</option>
+          </select>
+        </label>
+        <label>Nível do mapa:
+          <select id="rg-level">
+            <option value="uf">Estado (UF)</option>
+            <option value="regiao">Macrorregião</option>
+          </select>
+        </label>
+      </div>
+      <div id="rg-plot-uf" class="plot"></div>
+      <div id="rg-plot-region" class="plot"></div>
+      <p class="hint" id="rg-note"></p>
+    </section>
+
+    <!-- Aba 4: conclusão + comentários -->
+    <section id="conclusao" class="panel prose" role="tabpanel">
+      <h2>O que aprendemos — e o que fica em aberto</h2>
+      <p class="lead">
+        Começamos com uma pergunta simples e uma suspeita: o pacote do governo segurou os
+        preços? Cinco métodos, dois combustíveis e 27 estados depois, a resposta é mais
+        interessante que um "sim" ou "não".
+      </p>
+
+      <h3>A aposta</h3>
+      <p>
+        Em 28 de fevereiro de 2026 o petróleo quase dobrou. O governo respondeu represando os
+        preços por vários instrumentos ao mesmo tempo — subvenção, desoneração, taxa de
+        exportação e a política da Petrobras. A pergunta é se isso chegou ao seu bolso.
+      </p>
+
+      <h3>O veredito, com honestidade</h3>
+      <ul>
+        <li><strong>Gasolina:</strong> o pacote segurou cerca de <strong>R$ 0,6/litro</strong>
+            — na faixa da subvenção, às vezes acima. Funcionou.</li>
+        <li><strong>Diesel:</strong> aqui a surpresa. A subvenção era de <strong>R$ 1,47/litro</strong>,
+            mas a bomba subiu quase até a paridade de importação mesmo assim — ou seja,
+            <strong>boa parte do subsídio não chegou ao consumidor</strong>. É o achado mais
+            incômodo do trabalho.</li>
+        <li><strong>A incerteza é parte do resultado.</strong> Os cinco métodos discordam da
+            magnitude, porque 18 semanas é pouco para saber a que velocidade os preços teriam
+            subido. Por isso mostramos uma <em>banda</em>, não um número exato — e o método que
+            mais acerta fora da amostra (o VECM) aponta para supressão maior.</li>
+      </ul>
+
+      <h3>A desigualdade que a média esconde</h3>
+      <p>
+        "Preço nacional" é quase uma ficção estatística: entre estados a diferença passa de
+        <strong>R$ 1,30/litro</strong> — o Norte paga muito mais que o Sudeste. A intervenção
+        mira uma média que quase ninguém paga exatamente.
+      </p>
+
+      <h3>O que este trabalho <em>não</em> diz</h3>
+      <ul>
+        <li>Não separa o efeito de cada instrumento — é o <strong>pacote inteiro</strong>.</li>
+        <li>18 semanas pós-choque: retrato inicial, não sentença final.</li>
+        <li>O mapa cobre só os ~470 municípios que a ANP pesquisa (8,5% do país).</li>
+        <li>Não medimos o repasse à inflação — ficou fora do escopo desta versão.</li>
+      </ul>
+
+      <h3>Sua vez</h3>
+      <p>
+        Isto é um trabalho de estudante e uma análise viva. Discorda de alguma escolha? Achou
+        um furo? Tem um dado melhor? O debate é bem-vindo abaixo.
+      </p>
+
+      <div class="callout" id="giscus-note">
+        💬 <strong>Os comentários ativam depois de publicar o site no GitHub e configurar o
+        giscus</strong> (~2 min). Passo a passo em <code>04_web/README.md</code>. Até lá, o
+        espaço abaixo pode aparecer vazio ou com um aviso do giscus.
+      </div>
+
+      <!-- giscus: substitua os PLACEHOLDERS pelos valores gerados em https://giscus.app -->
+      <div id="comments">
+        <script src="https://giscus.app/client.js"
+                data-repo="SEU-USUARIO/SEU-REPO"
+                data-repo-id="PLACEHOLDER_REPO_ID"
+                data-category="Comentários"
+                data-category-id="PLACEHOLDER_CATEGORY_ID"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="dark"
+                data-lang="pt"
+                crossorigin="anonymous"
+                async></script>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      Fonte dos dados: ANP (preços posto a posto), Brent (EIA/yfinance), USD/BRL (BCB).
+      Efeito estimado é o do <strong>pacote inteiro</strong> de intervenção, não de
+      instrumentos isolados. Ver limitações no manuscrito.
+    </p>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
